@@ -1,6 +1,7 @@
 # GenerateAndAutoupload
 项目来源：https://github.com/dreammis/social-auto-upload
 
+
 该项目在上面的项目基础上增加和删除了一些功能旨在自动生成视频并发布视频到各个社交媒体平台并打包程序
 
 GenerateAndAutoupload This project aims to automate the posting of videos to various social media platforms.
@@ -117,9 +118,9 @@ douyin_setup handle 参数为True，为手动获取cookie False 则是校验cook
 
 generate_schedule_time_next_day 默认从第二天开始（此举为避免选择时间的意外错误）
 参数解释：
-- total_videos 本次上传视频个数
-- videos_per_day 每日上传视频数量
-- daily_times 视频发布时间 默认6、11、14、16、22点
+- total_videos 本次上传视频个数(我调整了上限为10)
+- videos_per_day 每日上传视频数量(我调整了上限为10)
+- daily_times 视频发布时间 默认10、11、12、13、14、15、16、17、18、19点
 - start_days 从第N天开始
 ```
 
@@ -178,19 +179,6 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 
 ---
 
-### 5. tiktok 
-使用playwright模拟浏览器行为(Simulating Browser Behavior with playwright)
-1. 准备视频目录结构(Prepare the video directory structure)
-2. 将本地chrome路径配置到conf文件中  LOCAL_CHROME_PATH = "xxx/xxx/chrome.exe"(Configure the local chrome path to the conf file)
-3. cookie获取(generate your cookie)：get_tk_cookie.py 
-![get tiktok cookie](media/tk_login.png) 
-4. 上传视频(upload video)：upload_video_to_tiktok.py
-
-24.7.3 update local chrome support:
-- you can upload your custom thumbnail(place `png` file at the path of `videos`)
-- if not, the system will take the first frame of the video as the thumbnail.
-- chrome drive can't login by gmail oauth. the google don't support it. (if you want login by google oauth you can use the `tk_uploader/main.py` old firefox.)
-- before the upload process change the language to eng.
 
 
 参考项目：
