@@ -1,0 +1,2 @@
+# GenerateAndAutoupload
+文本转文字视频并上传到抖音和腾讯和bilibili
