@@ -189,6 +189,7 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 ```
 修改main.spec,其中pathex是你项目放的位置，我的项目放到了D:\Demos\social-auto-upload-main
 ```
+---
 ```
 点击生成exe.bat，项目打包后的成品大概这个样子
 ```
