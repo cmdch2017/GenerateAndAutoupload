@@ -8,6 +8,8 @@
 GenerateAndAutoupload This project aims to automate the posting of videos to various social media platforms.
 
 <img src="media/show/tkupload.gif" alt="tiktok show" width="800"/>
+## how to use
+默认当天的日期，网上找到的素材按照黏贴到空白处点击保存按钮，然后点击生成选定日期视频，再点击一键上传即可。
 
 ## 💡Feature
 - 中国主流社交媒体平台：
@@ -179,7 +181,9 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 - https://github.com/biliup/biliup-rs
 
 ---
-
+## 打包项目成exe应用
+修改main.spec,其中pathex是你项目放的位置，我的项目放到了D:\Demos\social-auto-upload-main
+点击生成exe.bat
 
 
 参考项目：
