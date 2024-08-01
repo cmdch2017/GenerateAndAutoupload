@@ -1,5 +1,6 @@
 # GenerateAndAutoupload
 项目来源：https://github.com/dreammis/social-auto-upload
+<img src="media/show/屏幕截图 2024-08-01 152501.png" alt="tiktok show" width="800"/>
 
 
 该项目在上面的项目基础上增加和删除了一些功能旨在自动生成视频并发布视频到各个社交媒体平台并打包程序
