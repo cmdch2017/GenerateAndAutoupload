@@ -12,7 +12,6 @@ a = Analysis(
         ('bilibili_uploader/', 'bilibili_uploader/'),    # Ensure audio file is included
         ('tencent_uploader/', 'tencent_uploader/'),    # Ensure audio file is included
         ('utils', 'utils'),  # Ensure the video files directory is included
-        ('playwright/', 'playwright/'),  # Ensure the video files directory is included
         ('staticSource/', 'staticSource/'),  # Ensure the video files directory is included
     ],
     hiddenimports=[
