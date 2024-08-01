@@ -194,7 +194,7 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 ---
 
 ```
-点击生成exe.bat，项目打包后的成品大概这个样子
+点击生成exe.bat，项目打包后的成品大概这个样子，其中uploader文件夹里放account.json，postcards/2024-08-01/*.mp4（当天日期）放视频，source下放texts.json（文字转视频中文字存放的位置）
 ```
 
 <img src="media/show/22.png" alt="tiktok show" width="600"/>
