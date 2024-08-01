@@ -5,9 +5,7 @@
 
 该项目在上面的项目基础上增加和删除了一些功能旨在自动生成视频并发布视频到各个社交媒体平台并打包程序
 
-GenerateAndAutoupload This project aims to automate the posting of videos to various social media platforms.
 
-<img src="media/show/tkupload.gif" alt="tiktok show" width="800"/>
 ## how to use
 默认当天的日期，网上找到的素材按照黏贴到空白处点击保存按钮，然后点击生成选定日期视频，再点击一键上传即可。
 
@@ -17,7 +15,7 @@ GenerateAndAutoupload This project aims to automate the posting of videos to var
   - [x] 视频号
   - [x] bilibili
 
-
+<img src="media/show/tkupload.gif" alt="tiktok show" width="800"/>
 
 # 💾Installation
 ```
@@ -31,7 +29,6 @@ The project for my own project extracted, my release strategy is timed release (
 
 If you need to release it immediately, you can study the source code or ask me questions.
 
-该项目为我自用项目抽离出来，我的发布策略是定时发布（提前一天发布），故发布部分采用的事件均为第二天的时间
 
 如果你有需求立即发布，可自行研究源码或者向我提问
 
