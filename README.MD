@@ -1,5 +1,7 @@
 # GenerateAndAutoupload
 项目来源：https://github.com/dreammis/social-auto-upload
+## 启动必知道
+conf.py  这里配置了chrome浏览器的启动位置，你的项目一定要安装chrome C:\Program Files\Google\Chrome\Application\chrome.exe
 <img src="media/show/屏幕截图 2024-08-01 152501.png" alt="tiktok show" width="800"/>
 
 
