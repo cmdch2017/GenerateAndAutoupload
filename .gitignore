@@ -169,5 +169,3 @@ bilibili_uploader/*.json
 tk_uploader/*.json
 playwright/
 cookies
-postcards/
-staticSource/
