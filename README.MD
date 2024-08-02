@@ -1,5 +1,5 @@
 # GenerateAndAutoupload
-项目来源：https://github.com/dreammis/social-auto-upload
+本项目基于此处改编：https://github.com/dreammis/social-auto-upload
 ## 如何下载（找到最新的release）
 https://github.com/cmdch2017/GenerateAndAutoupload/releases/download/v1.0.1/v1.0.1.zip
 ## 启动必知道
