@@ -214,12 +214,9 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 
 ---
 
-### 其余部分(todo)
-整理后上传
 
----
-
-
+## 打赏
+<img src="media/show/alipay.jpg" alt="tiktok show" width="600"/>
 
 
 ## ffmpeg生成文字转视频
