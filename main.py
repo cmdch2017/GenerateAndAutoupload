@@ -1,25 +1,27 @@
 import json
-import tkinter as tk
-from tkinter import ttk, messagebox
-from datetime import datetime
-from tkcalendar import Calendar
-from my.generateVideosByBeginAndEnd import generate_postcards_from_json
-import shutil
-from pathlib import Path
-from my.upload_douyin import upload_videos_to_douyin
-from my.upload_bilibili import upload_videos_to_bilibili
-from my.upload_tencent import upload_videos_to_tencent
-from pathUtils import get_dest_dir, get_base_dir
-import sys
 import os
 import subprocess
+import sys
+import tkinter as tk
+from datetime import datetime
+from tkinter import ttk, messagebox
+
+from tkcalendar import Calendar
+
+from my.generateVideosByBeginAndEnd import generate_postcards_from_json
+from my.upload_bilibili import upload_videos_to_bilibili
+from my.upload_douyin import upload_videos_to_douyin
+from my.upload_tencent import upload_videos_to_tencent
+from pathUtils import get_dest_dir, get_base_dir
+from my.get_douyin_cookie import setup_douyin_account
+from my.get_bilibili_cookie import open_bilibili_folder
+from my.get_tencent_cookie import setup_tencent_account
 
 class TextEditorApp:
     def __init__(self, root, json_file, wav_file, background_file):
         self.root = root
-        self.json_file_package_real = get_dest_dir() / json_file
-        self.json_file = get_base_dir() / json_file  # 使用 get_base_dir 获取文件路径
-        self.wav_file = get_base_dir() / wav_file  # 使用 get_base_dir 获取文件路径
+        self.json_file = get_dest_dir() / json_file  # 使用获取本地磁盘文件路径
+        self.wav_file = get_base_dir() / wav_file  # 使用 get_base_dir 获取虚拟文件路径
         self.background_file = get_base_dir() / background_file
         self.records = self.load_json()
         self.create_widgets()
@@ -62,7 +64,7 @@ class TextEditorApp:
         # 文本框，用于显示和编辑文本
         self.text_box = tk.Text(self.root, wrap='word', height=20, width=80, font=('Arial', 12), borderwidth=2,
                                 relief='sunken')
-        self.text_box.grid(row=1, column=0, columnspan=2, padx=20, pady=20, sticky='nsew')
+        self.text_box.grid(row=1, column=0, columnspan=3, padx=20, pady=20, sticky='nsew')
 
         # 非必要步骤按钮
         self.save_button = ttk.Button(self.root, text="保存（非必要步骤）", command=self.save_texts)
@@ -71,18 +73,30 @@ class TextEditorApp:
         self.generate_video_button = ttk.Button(self.root, text="生成选定日期视频（非必要步骤）",
                                                 command=self.generate_video_for_selected_date)
         self.generate_video_button.grid(row=3, column=0, padx=20, pady=10, sticky='ew')
+        # 上传cookies按钮
+        self.cookies_tencent_button = ttk.Button(self.root, text="cookies  抖音", command=setup_douyin_account)
+
+        self.cookies_tencent_button.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
+
+        self.cookies_bilibili_button = ttk.Button(self.root, text="cookies Bilibili",
+                                                    command=open_bilibili_folder)
+        self.cookies_bilibili_button.grid(row=3, column=1, padx=20, pady=10, sticky='ew')
+
+        self.cookies_tencent_button = ttk.Button(self.root, text="cookies Tencent",
+                                                   command=setup_tencent_account)
+        self.cookies_tencent_button.grid(row=4, column=1, padx=20, pady=10, sticky='ew')
 
         # 上传步骤按钮
         self.upload_button = ttk.Button(self.root, text="一键上传当日视频到抖音", command=self.upload_video_to_douyin)
-        self.upload_button.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
+        self.upload_button.grid(row=2, column=2, padx=20, pady=10, sticky='ew')
 
         self.upload_to_bilibili_button = ttk.Button(self.root, text="一键上传当日视频到 Bilibili",
                                                     command=self.upload_video_to_bilibili)
-        self.upload_to_bilibili_button.grid(row=3, column=1, padx=20, pady=10, sticky='ew')
+        self.upload_to_bilibili_button.grid(row=3, column=2, padx=20, pady=10, sticky='ew')
 
         self.upload_to_tencent_button = ttk.Button(self.root, text="一键上传当日视频到 Tencent",
                                                    command=self.upload_video_to_tencent)
-        self.upload_to_tencent_button.grid(row=4, column=1, padx=20, pady=10, sticky='ew')
+        self.upload_to_tencent_button.grid(row=4, column=2, padx=20, pady=10, sticky='ew')
 
         # 打开文件夹按钮
         self.open_folder_button = ttk.Button(self.root, text="打开当日文件夹，调整你要上传的视频",
@@ -240,7 +254,7 @@ class TextEditorApp:
 
         # 保存到 JSON 文件
         try:
-            with open(self.json_file_package_real, 'w', encoding='utf-8') as file:
+            with open(self.json_file, 'w', encoding='utf-8') as file:
                 json.dump(self.records, file, ensure_ascii=False, indent=4)
             messagebox.showinfo("成功", "文本已成功保存。")
         except IOError as e:
@@ -256,10 +270,6 @@ class TextEditorApp:
             messagebox.showwarning("警告", "无效的日期格式。")
             return
 
-        if not self.is_valid_date(date_str):
-            messagebox.showwarning("警告", "请输入有效的日期，格式为 YYYY-MM-DD。")
-            return
-
         # 获取选择的日期对应的记录
         selected_records = [record for record in self.records if record['date'] == date_str]
         if not selected_records:
@@ -268,11 +278,6 @@ class TextEditorApp:
 
         # 生成视频
         try:
-            output_dir = 'postcards'
-            # 调用生成视频的函数,生成到虚拟路径
-            if getattr(sys, 'frozen', False):
-                generate_postcards_from_json(self.json_file, self.wav_file, self.background_file,
-                                             get_base_dir() / output_dir)
             # 生成到真实路径
             generate_postcards_from_json(self.json_file, self.wav_file, self.background_file)
             messagebox.showinfo("成功", "视频生成完成。")
@@ -287,10 +292,6 @@ class TextEditorApp:
             date_str = date.strftime('%Y-%m-%d')  # 将 datetime 对象转换为所需格式
         except ValueError:
             messagebox.showwarning("警告", "无效的日期格式。")
-            return
-
-        if not self.is_valid_date(date_str):
-            messagebox.showwarning("警告", "请输入有效的日期，格式为 YYYY-MM-DD。")
             return
 
         # 获取选择的日期对应的记录
@@ -316,10 +317,6 @@ class TextEditorApp:
             messagebox.showwarning("警告", "无效的日期格式。")
             return
 
-        if not self.is_valid_date(date_str):
-            messagebox.showwarning("警告", "请输入有效的日期，格式为 YYYY-MM-DD。")
-            return
-
         # 获取选择的日期对应的记录
         selected_records = [record for record in self.records if record['date'] == date_str]
         if not selected_records:
@@ -343,9 +340,6 @@ class TextEditorApp:
             messagebox.showwarning("警告", "无效的日期格式。")
             return
 
-        if not self.is_valid_date(date_str):
-            messagebox.showwarning("警告", "请输入有效的日期，格式为 YYYY-MM-DD。")
-            return
 
         # 获取选择的日期对应的记录
         selected_records = [record for record in self.records if record['date'] == date_str]
@@ -369,34 +363,8 @@ class TextEditorApp:
         self.root.geometry(f'{width}x{height}+{int(x)}+{int(y)}')
 
 
-def copyFiles(src, dest):
-    src_path = Path(src)
-    dest_path = Path(dest)
-
-    if not src_path.exists():
-        print(f"Source directory {src_path} does not exist.")
-        return
-
-    if not dest_path.exists():
-        dest_path.mkdir(parents=True)
-
-    for item in src_path.iterdir():
-        s = src_path / item.name
-        d = dest_path / item.name
-        if s.is_dir():
-            shutil.copytree(s, d, dirs_exist_ok=True)
-        else:
-            shutil.copy2(s, d)
-
-
 if __name__ == "__main__":
     root = tk.Tk()
-    json_file = 'source/texts.json'  # 使用相对路径
-    wav_file = 'staticSource/大地.wav'  # 使用相对路径
-    background_file = 'staticSource/background.jpg'
-    # TODO 本地的postcards文件夹的内容拷贝到虚拟路径的my/postcards中
-    if getattr(sys, 'frozen', False):
-        copyFiles(get_dest_dir() / "postcards", get_base_dir() / "postcards")
-        copyFiles(get_dest_dir() / "source", get_base_dir() / "source")
-    app = TextEditorApp(root, json_file, wav_file, background_file)
+    app = TextEditorApp(root, json_file="source/texts.json", wav_file="staticSource/大地.wav",
+                        background_file="staticSource/background.jpg")
     root.mainloop()

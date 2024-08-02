@@ -1,9 +1,8 @@
 import asyncio
-from pathlib import Path
+
 from douyin_uploader.main import douyin_setup, DouYinVideo
+from pathUtils import get_dest_dir
 from utils.files_times import generate_schedule_time_next_day, get_title_and_hashtags
-import sys
-from pathUtils import get_dest_dir, get_base_dir
 
 
 def upload_videos_to_douyin(date_str, videos_per_day=10, daily_times=[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]):

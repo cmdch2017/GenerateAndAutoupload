@@ -3,7 +3,7 @@ import os
 from pathUtils import get_dest_dir
 
 
-def open_folder():
+def open_bilibili_folder():
     try:
         dest_dir = get_dest_dir()
         folder_path = dest_dir / "bilibili_uploader"
@@ -25,5 +25,6 @@ def open_folder():
         print(f"An error occurred: {str(e)}")
 
 
+
 if __name__ == "__main__":
-    open_folder()
+    open_bilibili_folder()

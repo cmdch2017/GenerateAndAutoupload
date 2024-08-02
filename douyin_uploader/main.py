@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+import asyncio
+import os
 from datetime import datetime
 
 from playwright.async_api import Playwright, async_playwright
-import os
-import asyncio
-from pathlib import Path
+
 from conf import LOCAL_CHROME_PATH
 from utils.base_social_media import set_init_script
 from utils.log import douyin_logger

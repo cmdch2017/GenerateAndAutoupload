@@ -47,6 +47,7 @@ async def get_tencent_cookie(account_file):
         # 点击调试器的继续，保存cookie
         await context.storage_state(path=account_file)
 
+
 async def weixin_setup(handle=True):
     account_file = get_dest_dir() / "tencent_uploader" / "account.json"
     if not os.path.exists(account_file) or not await cookie_auth(account_file):
@@ -57,8 +58,14 @@ async def weixin_setup(handle=True):
         await get_tencent_cookie(account_file)
     return True
 
-if __name__ == '__main__':
+
+def setup_tencent_account():
     cookie_setup = asyncio.run(weixin_setup())
+    return cookie_setup
+
+
+if __name__ == '__main__':
+    cookie_setup = setup_tencent_account
     if cookie_setup:
         print("Douyin account setup successfully.")
     else:
