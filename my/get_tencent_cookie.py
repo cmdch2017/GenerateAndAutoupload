@@ -1,10 +1,10 @@
 import asyncio
+import os
 
 from playwright.async_api import async_playwright
 
 from conf import LOCAL_CHROME_PATH
 from pathUtils import get_dest_dir
-from tencent_uploader.main import weixin_setup
 from utils.base_social_media import set_init_script
 from utils.log import tencent_logger
 
@@ -47,7 +47,19 @@ async def get_tencent_cookie(account_file):
         # 点击调试器的继续，保存cookie
         await context.storage_state(path=account_file)
 
+async def weixin_setup(handle=True):
+    account_file = get_dest_dir() / "tencent_uploader" / "account.json"
+    if not os.path.exists(account_file) or not await cookie_auth(account_file):
+        if not handle:
+            # Todo alert message
+            return False
+        tencent_logger.info('[+] cookie文件不存在或已失效，即将自动打开浏览器，请扫码登录，登陆后会自动生成cookie文件')
+        await get_tencent_cookie(account_file)
+    return True
 
 if __name__ == '__main__':
-    account_file = get_dest_dir() / "tencent_uploader" / "account.json"
-    cookie_setup = asyncio.run(weixin_setup(str(account_file), handle=True))
+    cookie_setup = asyncio.run(weixin_setup())
+    if cookie_setup:
+        print("Douyin account setup successfully.")
+    else:
+        print("Failed to setup Douyin account.")

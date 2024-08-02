@@ -6,6 +6,7 @@ from pathUtils import get_dest_dir
 from utils.base_social_media import set_init_script
 from utils.log import douyin_logger
 
+
 async def cookie_auth(account_file, headless=True):
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(headless=headless, executable_path=LOCAL_CHROME_PATH)
@@ -20,6 +21,7 @@ async def cookie_auth(account_file, headless=True):
         else:
             print("[+] cookie 有效")
             return True
+
 
 async def douyin_cookie_gen(account_file, headless=False):
     async with async_playwright() as playwright:
@@ -38,6 +40,7 @@ async def douyin_cookie_gen(account_file, headless=False):
         # 点击调试器的继续，保存cookie
         await context.storage_state(path=account_file)
 
+
 async def douyin_setup(account_file, handle=False, headless=True):
     if not os.path.exists(account_file) or not await cookie_auth(account_file, headless):
         if not handle:
@@ -47,15 +50,15 @@ async def douyin_setup(account_file, handle=False, headless=True):
         await douyin_cookie_gen(account_file, headless=False)
     return True
 
+
 # Function to be called from other scripts
-def setup_douyin_account(account_file_path, handle=False, headless=True):
-    account_file = str(account_file_path)
+def setup_douyin_account(handle=True, headless=True):
+    account_file = get_dest_dir() / "douyin_uploader" / "account.json"
     return asyncio.run(douyin_setup(account_file, handle=handle, headless=headless))
 
+
 if __name__ == '__main__':
-    account_file = get_dest_dir() / "douyin_uploader" / "account.json"
-    print(f"account_file: {account_file}")
-    cookie_setup = setup_douyin_account(account_file, handle=True)
+    cookie_setup = setup_douyin_account()
     if cookie_setup:
         print("Douyin account setup successfully.")
     else:

@@ -8,11 +8,3 @@ default_chrome_path = Path(r"C:\Program Files\Google\Chrome\Application\chrome.e
 # 检查路径是否存在
 if default_chrome_path.exists():
     LOCAL_CHROME_PATH = default_chrome_path
-else:
-    LOCAL_CHROME_PATH = ""
-    if getattr(sys, 'frozen', False):
-        # 腾讯公众号不能用playwright
-        # 获取虚拟路径目录
-        LOCAL_CHROME_PATH = Path(sys._MEIPASS) / "playwright" / "chromium-1124" / "chrome-win" / "chrome.exe"
-
-

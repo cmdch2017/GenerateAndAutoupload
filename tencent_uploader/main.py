@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
+import asyncio
+import os
 from datetime import datetime
 
 from playwright.async_api import Playwright, async_playwright
-import os
-import asyncio
-from pathlib import Path
 
 from conf import LOCAL_CHROME_PATH
 from utils.base_social_media import set_init_script
 from utils.files_times import get_absolute_path
 from utils.log import tencent_logger
 
-default_executable_path = str(Path("C:\Program Files\Google\Chrome\Application/chrome.exe"))
 
 def format_str_for_short_title(origin_title: str) -> str:
     # 定义允许的特殊字符
@@ -35,7 +33,7 @@ def format_str_for_short_title(origin_title: str) -> str:
 
 async def cookie_auth(account_file):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True, executable_path=default_executable_path)
+        browser = await playwright.chromium.launch(headless=True, executable_path=LOCAL_CHROME_PATH)
         context = await browser.new_context(storage_state=account_file)
         context = await set_init_script(context)
         # 创建一个新的页面
@@ -60,7 +58,7 @@ async def get_tencent_cookie(account_file):
             'headless': False,  # Set headless option here
         }
         # Make sure to run headed.
-        browser = await playwright.chromium.launch(**options, executable_path=default_executable_path)
+        browser = await playwright.chromium.launch(**options, executable_path=LOCAL_CHROME_PATH)
         # Setup context however you like.
         context = await browser.new_context()  # Pass any options
         # Pause the page, and start recording manually.

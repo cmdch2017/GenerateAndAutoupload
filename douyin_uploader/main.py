@@ -9,12 +9,10 @@ from conf import LOCAL_CHROME_PATH
 from utils.base_social_media import set_init_script
 from utils.log import douyin_logger
 
-default_executable_path = str(Path("C:/Users/Administrator\AppData\Local\ms-playwright\chromium-1124\chrome-win/chrome.exe"))
-
 
 async def cookie_auth(account_file):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True, executable_path=default_executable_path)
+        browser = await playwright.chromium.launch(headless=True, executable_path=LOCAL_CHROME_PATH)
         context = await browser.new_context(storage_state=account_file)
         context = await set_init_script(context)
         # 创建一个新的页面
@@ -46,7 +44,7 @@ async def douyin_cookie_gen(account_file):
             'headless': False
         }
         # Make sure to run headed.
-        browser = await playwright.chromium.launch(**options, executable_path=default_executable_path)
+        browser = await playwright.chromium.launch(**options, executable_path=LOCAL_CHROME_PATH)
         # Setup context however you like.
         context = await browser.new_context()  # Pass any options
         context = await set_init_script(context)
@@ -94,7 +92,7 @@ class DouYinVideo(object):
             browser = await playwright.chromium.launch(headless=False, executable_path=self.local_executable_path)
             print(1)
         else:
-            browser = await playwright.chromium.launch(headless=False, executable_path=default_executable_path)
+            browser = await playwright.chromium.launch(headless=False, executable_path=LOCAL_CHROME_PATH)
             print(2)
         # 创建一个浏览器上下文，使用指定的 cookie 文件
         print(self.account_file)

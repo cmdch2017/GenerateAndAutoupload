@@ -1,8 +1,12 @@
 import subprocess
 import os
+from pathUtils import get_dest_dir
 
-def open_folder(folder_path):
+
+def open_folder():
     try:
+        dest_dir = get_dest_dir()
+        folder_path = dest_dir / "bilibili_uploader"
         # 检查文件夹是否存在
         if not os.path.exists(folder_path):
             print(f"Folder not found: {folder_path}")
@@ -20,6 +24,6 @@ def open_folder(folder_path):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+
 if __name__ == "__main__":
-    folder_path = r'D:\Demos\social-auto-upload-main\bilibili_uploader'
-    open_folder(folder_path)
+    open_folder()
