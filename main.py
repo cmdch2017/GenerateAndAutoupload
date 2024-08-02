@@ -11,7 +11,8 @@ from my.upload_bilibili import upload_videos_to_bilibili
 from my.upload_tencent import upload_videos_to_tencent
 from pathUtils import get_dest_dir, get_base_dir
 import sys
-
+import os
+import subprocess
 
 class TextEditorApp:
     def __init__(self, root, json_file, wav_file, background_file):
@@ -63,33 +64,69 @@ class TextEditorApp:
                                 relief='sunken')
         self.text_box.grid(row=1, column=0, columnspan=2, padx=20, pady=20, sticky='nsew')
 
-        # 保存按钮
-        self.save_button = ttk.Button(self.root, text="保存", command=self.save_texts)
+        # 非必要步骤按钮
+        self.save_button = ttk.Button(self.root, text="保存（非必要步骤）", command=self.save_texts)
         self.save_button.grid(row=2, column=0, padx=20, pady=10, sticky='ew')
 
-        # 生成视频按钮
-        self.generate_video_button = ttk.Button(self.root, text="生成选定日期视频",
+        self.generate_video_button = ttk.Button(self.root, text="生成选定日期视频（非必要步骤）",
                                                 command=self.generate_video_for_selected_date)
-        self.generate_video_button.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
+        self.generate_video_button.grid(row=3, column=0, padx=20, pady=10, sticky='ew')
 
-        # 上传视频按钮
+        # 上传步骤按钮
         self.upload_button = ttk.Button(self.root, text="一键上传当日视频到抖音", command=self.upload_video_to_douyin)
-        self.upload_button.grid(row=3, column=0, padx=20, pady=10, sticky='ew')
+        self.upload_button.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
 
-        # 上传视频按钮到 Bilibili
         self.upload_to_bilibili_button = ttk.Button(self.root, text="一键上传当日视频到 Bilibili",
                                                     command=self.upload_video_to_bilibili)
         self.upload_to_bilibili_button.grid(row=3, column=1, padx=20, pady=10, sticky='ew')
 
-        # 上传视频按钮到 Tencent
         self.upload_to_tencent_button = ttk.Button(self.root, text="一键上传当日视频到 Tencent",
                                                    command=self.upload_video_to_tencent)
-        self.upload_to_tencent_button.grid(row=4, column=0, padx=20, pady=10, sticky='ew')
+        self.upload_to_tencent_button.grid(row=4, column=1, padx=20, pady=10, sticky='ew')
+
+        # 打开文件夹按钮
+        self.open_folder_button = ttk.Button(self.root, text="打开当日文件夹，调整你要上传的视频",
+                                             command=self.open_folder_for_selected_date)
+        self.open_folder_button.grid(row=4, column=0, padx=20, pady=10, sticky='ew')
 
         # 调整列权重以确保文本框和按钮占据足够空间
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
         self.root.grid_rowconfigure(1, weight=1)
+
+    def open_folder_for_selected_date(self):
+        """打开选择的日期对应的文件夹。"""
+        date_str = self.calendar.get_date()
+        try:
+            date = datetime.strptime(date_str, '%m/%d/%y')  # 将日期字符串转换为 datetime 对象
+            date_str = date.strftime('%Y-%m-%d')  # 将 datetime 对象转换为所需格式
+        except ValueError:
+            messagebox.showwarning("警告", "无效的日期格式。")
+            return
+
+        if not self.is_valid_date(date_str):
+            messagebox.showwarning("警告", "请输入有效的日期，格式为 YYYY-MM-DD。")
+            return
+
+        # 构建文件夹路径
+        folder_path = get_dest_dir() / "postcards" / date_str
+        folder_path.mkdir(parents=True, exist_ok=True)
+
+        # 打开文件夹
+        if folder_path.exists():
+            try:
+                if sys.platform == 'win32':  # Windows
+                    os.startfile(folder_path)
+                elif sys.platform == 'darwin':  # macOS
+                    subprocess.run(['open', folder_path])
+                elif sys.platform == 'linux':  # Linux
+                    subprocess.run(['xdg-open', folder_path])
+                else:
+                    messagebox.showwarning("警告", "无法识别的操作系统。")
+            except Exception as e:
+                messagebox.showerror("错误", f"打开文件夹时出错: {e}")
+        else:
+            messagebox.showwarning("警告", "文件夹不存在。")
 
     def set_default_date(self):
         """设置默认查询日期为今天。"""

@@ -53,10 +53,9 @@ def combine_image_audio(image_path, audio_path, output_path='output.mp4', durati
     subprocess.run(cmd, check=True)
 
 
-def generate_text_file(text, output_path):
+def generate_text_file(text, output_path, tags="#读书推荐 #读书成长 #读书摘抄"):
     """生成一个包含截取到第一个句号并添加标签的文本文件。"""
     first_sentence = text.split('。')[0] + '。🥺❤️‍🩹'
-    tags = "#读书推荐 #读书成长 #读书摘抄"
     full_text = f"{first_sentence}\n{tags}"
 
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -64,7 +63,7 @@ def generate_text_file(text, output_path):
 
 
 def generate_postcards_from_json(json_file, audio_file, postcard_path="source/background.jpg", output_dir='postcards',
-                                 begin_date=None, end_date=None,
+                                 begin_date=None, end_date=None, tags="#读书推荐 #读书成长 #读书摘抄",
                                  max_items_per_day=10, duration=5):
     os.makedirs(output_dir, exist_ok=True)
 
@@ -107,11 +106,12 @@ def generate_postcards_from_json(json_file, audio_file, postcard_path="source/ba
 
                 text_to_image(text, output_path=image_path, postcard_path=postcard_path, line_spacing=20)  # 修改行间距
                 combine_image_audio(image_path, audio_file, output_path=video_path, duration=duration)
-                generate_text_file(text, text_file_path)
+                generate_text_file(text, text_file_path, tags=tags)
 
 
 if __name__ == '__main__':
     # 示例：生成2024年7月29日至2024年7月31日之间的明信片视频
-    generate_postcards_from_json('source/texts.json', 'staticSource/大地.wav', postcard_path="staticSource/background.jpg",
-                                 output_dir='../postcards', max_items_per_day=10,
+    generate_postcards_from_json('source/texts.json', 'staticSource/大地.wav',
+                                 postcard_path="staticSource/background.jpg",
+                                 output_dir='../postcards', max_items_per_day=10, tags="#读书推荐 #读书成长 #读书摘抄",
                                  duration=10)
