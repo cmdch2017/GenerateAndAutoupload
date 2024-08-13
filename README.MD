@@ -1,10 +1,13 @@
 # GenerateAndAutoupload
-项目来源：https://github.com/dreammis/social-auto-upload
-## 启动必知道
-conf.py  这里配置了chrome浏览器的启动位置，你的项目一定要安装chrome C:\Program Files\Google\Chrome\Application\chrome.exe
+本项目基于此处改编：https://github.com/dreammis/social-auto-upload
+## 如何下载（找到最新的release）
+https://github.com/cmdch2017/GenerateAndAutoupload/releases/download/v1.0.1/v1.0.1.zip
+## 启动必知道！！！
+conf.py  这里配置了chrome浏览器的启动位置，你的项目一定要安装chrome，我打包的路径是 C:\Program Files\Google\Chrome\Application\chrome.exe
+如果你安装到了C:\Program Files (x86)\Google\Chrome\Application，你需要复制程序到我提供的路径位置！！！
 ## 项目图片示例
 ### v1.0.1
-<img src="media/屏幕截图 2024-08-02 144143.png" alt="tiktok show" width="800"/>
+<img src="media/show/屏幕截图 2024-08-02 144143.png" alt="tiktok show" width="800"/>
 
 ### v1.0.0
 <img src="media/show/屏幕截图 2024-08-01 152501.png" alt="tiktok show" width="800"/>
@@ -14,8 +17,11 @@ conf.py  这里配置了chrome浏览器的启动位置，你的项目一定要�
 
 
 ## how to use
-默认当天的日期，网上找到的素材按照黏贴到空白处点击保存按钮，然后点击生成选定日期视频，再点击一键上传即可。
+默认当天的日期，网上找到的素材按照黏贴到空白处点击保存按钮，然后点击生成选定日期视频，确保生成cookies后，再点击一键上传即可。
+生成的视频如下所示：
+当然你也不一定需要用到生成视频的功能，只需要批量上传，那你就点击当日文件夹按钮
 
+<img src="media/show/generateVideos.png" alt="tiktok show" width="800"/>
 ## 💡Feature
 - 中国主流社交媒体平台：
   - [x] 抖音
@@ -209,12 +215,9 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 
 ---
 
-### 其余部分(todo)
-整理后上传
 
----
-
-
+## 打赏
+<img src="media/show/alipay.jpg" alt="tiktok show" width="600"/>
 
 
 ## ffmpeg生成文字转视频
