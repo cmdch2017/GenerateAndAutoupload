@@ -1,0 +1,16 @@
+version: '3'
+services:
+  autoupload:
+    image: autoupload   # 你生成的镜像名
+    working_dir: /app
+    ports:
+      - 8080:8080
+    environment:
+      - DISPLAY=$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix  # 允许访问宿主机的X11
+      - D:\app\social-auto-upload-main:/app  # 映射宿主机的 D:\app\social-auto-upload-main 目录到容器的 /app 目录
+    command: >
+      xvfb-run python main.py  # 启动命令
+    stdin_open: true  # 允许你通过`docker-compose exec`命令访问容器的终端
+    tty: true  # 为容器分配伪终端
