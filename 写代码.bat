@@ -1,0 +1,1 @@
+playwright codegen -o script.py
