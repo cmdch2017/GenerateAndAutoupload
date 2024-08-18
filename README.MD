@@ -214,7 +214,8 @@ bilibili cookie 长期有效（至少我运行2年以来是这样的）
 - https://github.com/wkaisertexas/tiktok-uploader
 
 ---
-
+## 说明
+尝试项目打包docker，但是docker对于界面化的程序需要x11，所以感觉界面化程序用docker打包意义不大。后续思路其实是写一个没有界面，headless参数为true（playwright浏览器不显示的方式）运行即可
 
 ## 打赏
 <img src="media/show/alipay.jpg" alt="tiktok show" width="600"/>
